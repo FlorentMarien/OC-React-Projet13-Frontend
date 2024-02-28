@@ -6,6 +6,7 @@ import { fas } from '@fortawesome/free-solid-svg-icons'
 library.add(fas);
 function Navbar(){
     return(
+        <>
         <nav className="main-nav">
             <a className="main-nav-logo" onClick={(e) => {window.location = "/"}}>
             <img
@@ -16,12 +17,27 @@ function Navbar(){
             <h1 className="sr-only">Argent Bank</h1>
             </a>
             <div>
+                {
+                window.localStorage.getItem('token') === null ?   
                 <a className="main-nav-item" onClick={(e) => {window.location = "/sign-in"}}>
-                <FontAwesomeIcon className="fa fa-circle-user sign-in-icon" icon="fa fa-circle-user" />
+                <FontAwesomeIcon className="sign-in-icon" icon="fa fa-circle-user" />
                 Sign In
                 </a>
+                :
+                <>
+                <a className="main-nav-item" onClick={(e) => { window.location = "/user"; }}>
+                    <FontAwesomeIcon className="sign-in-icon" icon="fa fa-circle-user" />
+                    {window.localStorage.getItem("name")}
+                </a>
+                <a className="main-nav-item" onClick={(e) => { window.localStorage.clear(); window.location = "/sign-in";}}>
+                    <FontAwesomeIcon className="sign-in-icon" icon="fa fa-sign-out" />
+                    Sign Out
+                </a>
+                </>
+                }
             </div>
         </nav>
+      </>
     );
 }
 export default Navbar

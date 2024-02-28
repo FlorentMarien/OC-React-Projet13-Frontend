@@ -1,6 +1,10 @@
 import './../styles/main.css';
 import Transaction from '../composantes/transaction';
 function User() {
+    function redirect(){
+        window.localStorage.clear();
+        window.location = '/sign-in';
+    }
     let data = {
         name:'Tony Jarvis',
         transaction: [
@@ -22,7 +26,17 @@ function User() {
         ]
     }
     let i=0;
+    let token = localStorage.getItem("token");
+    console.log(token);
     return (
+    token === null ?
+    <main className="main bg-dark">
+        <div className="header">
+            <h1>Erreur lors de la connexion</h1>
+            {redirect()}
+        </div>
+    </main>
+    :
     <main className="main bg-dark">
         <div className="header">
           <h1>Welcome back<br />{data.name}!</h1>
@@ -36,8 +50,7 @@ function User() {
                
             })
         }
-        
-      </main>
+    </main>
     );
   }
   
