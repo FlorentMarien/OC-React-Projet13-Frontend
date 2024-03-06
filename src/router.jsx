@@ -1,5 +1,6 @@
 import React from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import Navbar from "./composantes/navbar";
 import Index from "./pages/index";
 import SignIn from "./pages/sign-in";
 import User from "./pages/user";
@@ -9,16 +10,16 @@ export default function Router() {
   const router = createBrowserRouter([
     {
       path: "/",
-      element: <Index />,
+      element: <><Navbar /><Index /></>,
       //errorElement: <ErrorPage />
     },
     {
       path: "/sign-in",
-      element: <SignIn />,
+      element: <><Navbar /><SignIn /></>,
     },
     {
       path: "/user",
-      element: <User />,
+      element: <><Navbar /><User /></>,
     },
   ]);
 

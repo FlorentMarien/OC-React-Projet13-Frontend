@@ -1,6 +1,7 @@
 import './../styles/main.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Api from './../services/api';
+
 function SignIn(){
     async function sendlogin(e){
         e.preventDefault();
@@ -14,7 +15,6 @@ function SignIn(){
             }
         });
         if(token !== null ){
-
             await api.getProfil(token).then((userprofil) => {
                 if(userprofil.status === 200){
                     localStorage.setItem("id", userprofil.body.id);
@@ -22,7 +22,6 @@ function SignIn(){
                 }
 
                 profil = userprofil.body;
-                console.log(profil)
             });
         }
         if(token !== null && profil!==null) window.location="/user";
