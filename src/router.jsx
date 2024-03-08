@@ -4,6 +4,7 @@ import Navbar from "./composantes/navbar";
 import Index from "./pages/index";
 import SignIn from "./pages/sign-in";
 import User from "./pages/user";
+import store from './flux';
 //import ErrorPage from "./components/errorpage";
 
 export default function Router() {

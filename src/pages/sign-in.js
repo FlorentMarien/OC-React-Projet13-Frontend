@@ -1,8 +1,10 @@
 import './../styles/main.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Api from './../services/api';
-
+import { useNavigate } from 'react-router-dom';
+import store from './../flux';
 function SignIn(){
+    const navigate = useNavigate();
     async function sendlogin(e){
         e.preventDefault();
         let api = new Api();
@@ -12,19 +14,11 @@ function SignIn(){
             if(resp.status === 200){
                 token = resp.body.token;
                 localStorage.setItem("token", token);
+                store.dispatch({type:'SUCCESS_LOGIN'});
+                store.dispatch({type:'ADD_TOKEN',token:token});
             }
         });
-        if(token !== null ){
-            await api.getProfil(token).then((userprofil) => {
-                if(userprofil.status === 200){
-                    localStorage.setItem("id", userprofil.body.id);
-                    localStorage.setItem("name", userprofil.body.firstName);
-                }
-
-                profil = userprofil.body;
-            });
-        }
-        if(token !== null && profil!==null) window.location="/user";
+        if(store.getState().token !== null) navigate('/user');
         else console.log("Error");
     }
     return(

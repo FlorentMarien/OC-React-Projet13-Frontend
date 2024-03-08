@@ -1,30 +1,29 @@
 import { configureStore } from '@reduxjs/toolkit'
-import { useDispatch } from 'react-redux'
 import { combineReducers } from 'redux'
 
-const initialState = {
-    connected:false,
-    profil: undefined
+const loginReducer = (state = false,action) => {
+    if(action.type === "SUCCESS_LOGIN") return true;
+    if(action.type === "DISCONNECT_LOGIN") return false;
+    return state;
 }
-const loginReducer = (state,action) => {
-    console.log("login_reducer")
-    if(action === "SUCESS_LOGIN") return true;
-    else return false;
+const profilReducer = (state = null,action) => {
+    if(action.type === "ADD_PROFIL") return action.profil;
+    if(action.type === "CLOSE_PROFIL") return null;
+    return state;
 }
-const profilReducer = (state,action,data) => {
-    if(action === "ADD_PROFIL") return data;
-    
+const tokenReducer = (state = null,action) => {
+    if(action.type === "ADD_TOKEN") return action.token;
+    if(action.type === "CLOSE_TOKEN") return null;
+    return state
 }
-const reducer = (state, action, data) => {
-    console.log(action)
-    return {
-        connected:loginReducer(state,action),
-        profil:profilReducer(state,action,data)
-    };
-};
+const reducer = combineReducers({
+    connected:loginReducer,
+    token:tokenReducer,
+    profil:profilReducer,
+});
 
 const store = configureStore({
-  reducer,initialState
-})
-console.log(store.getState())
+  reducer
+});
+store.getState();
 export default store
