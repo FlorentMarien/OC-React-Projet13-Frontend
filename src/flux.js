@@ -8,10 +8,12 @@ const loginReducer = (state = false,action) => {
 }
 const profilReducer = (state = null,action) => {
     if(action.type === "ADD_PROFIL") return action.profil;
+    if(action.type === "CHANGE_PROFIL") return action.profil;
     if(action.type === "CLOSE_PROFIL") return null;
     return state;
 }
 const tokenReducer = (state = null,action) => {
+    console.log(action)
     if(action.type === "ADD_TOKEN") return action.token;
     if(action.type === "CLOSE_TOKEN") return null;
     return state

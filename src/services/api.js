@@ -2,10 +2,10 @@ class Api{
     constructor(){
 
     }
-    async requestApi(url,data,token){
+    async requestApi(method,url,data,token){
         let tampon = {};
         let req = {
-            method: "POST", // *GET, POST, PUT, DELETE, etc.
+            method: method, // *GET, POST, PUT, DELETE, etc.
             mode: "cors", // no-cors, *cors, same-origin
             cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
             credentials: "same-origin", // include, *same-origin, omit
@@ -32,10 +32,13 @@ class Api{
         }
 
     async sendlogin(data){
-        return await this.requestApi('http://localhost:3001/api/v1/user/login',data);
+        return await this.requestApi('POST','http://localhost:3001/api/v1/user/login',data);
     }
     async getProfil(token){
-        return await this.requestApi('http://localhost:3001/api/v1/user/profile',undefined,token);
+        return await this.requestApi('POST','http://localhost:3001/api/v1/user/profile',undefined,token);
+    }
+    async changeProfil(token, data){
+        return await this.requestApi('PUT','http://localhost:3001/api/v1/user/profile',data,token);
     }
 }
 export default Api;

@@ -6,18 +6,13 @@ import { useState,useEffect } from 'react';
 import store from './../flux';
 function User() {
     const [state,setState] = useState(store.getState());
+    const [stateeditname,setstateeditname] = useState(0);
+    
     useEffect(() => {
         store.subscribe(()=>{setState(store.getState())})
     });
     const navigate = useNavigate();
-    function redirect(){
-        //Clear storage / state / redirect
-        window.localStorage.clear(); 
-        store.dispatch({type:'DISCONNECT_LOGIN'});
-        store.dispatch({type:'CLOSE_TOKEN'});
-        store.dispatch({type:'CLOSE_PROFIL'});
-        navigate('/sign-in');
-    }
+    
     let data = {
         name:'Tony Jarvis',
         transaction: [
@@ -38,20 +33,39 @@ function User() {
             },
         ]
     }
+    
     let api = new Api();
-
     async function getProfil(token){
         await api.getProfil(token).then((userprofil) => {
             if(userprofil.status === 200){
                 localStorage.setItem("id", userprofil.body.id);
                 localStorage.setItem("firstName", userprofil.body.firstName);
+                localStorage.setItem("lastName", userprofil.body.lastName);
                 let test = {...userprofil.body};
                 store.dispatch({type:'ADD_PROFIL',profil:test});
+                
             }
         });
     }
-
-    if(store.getState().token !== null ){
+    async function editname(e){
+        console.log('editname');
+        
+        let firstName = document.getElementById('input-firstname').value;
+        let lastName = document.getElementById('input-lastname').value;
+        if(firstName !== undefined && firstName !== "" && lastName !== undefined && lastName !== ""){
+            let profil = {
+                firstName:firstName,
+                lastName:lastName
+            }
+            
+            await api.changeProfil(store.getState().token,profil).then((answer)=>{
+                console.log(answer);
+                store.dispatch({type:'CHANGE_PROFIL',profil:profil});
+            })
+            
+        }
+    }
+    if(store.getState().token !== null && store.getState().profil === null){
         getProfil(store.getState().token);
     }
     let i=0;
@@ -60,7 +74,19 @@ function User() {
     <main className="main bg-dark">
     <div className="header">
       <h1>Welcome back<br />{store.getState().profil.firstName}!</h1>
-      <button className="edit-button">Edit Name</button>
+      {
+        stateeditname === 0 ?
+        <button className="edit-button" onClick={(e)=>{setstateeditname(1)}}>Edit Name</button>
+        :
+        <>
+        <input id="input-firstname" type='text' placeholder={store.getState().profil.firstName}/>
+        <input id="input-lastname" type='text' placeholder={store.getState().profil.lastName}/>
+        <button onClick={(e)=>{editname(e)}}>Edit</button>
+        <button onClick={(e)=>{setstateeditname(0)}}>Close</button>
+        </>
+      }
+      
+
     </div>
     <h2 className="sr-only">Accounts</h2>
     {

@@ -16,11 +16,11 @@ function Navbar(){
     });
     let token=null;
     //console.log(store.getState())
-    if(window.localStorage.getItem('token') !== null && window.localStorage.getItem('id') !== null && window.localStorage.getItem('firstName') !== null){
+    if(window.localStorage.getItem('token') !== null && window.localStorage.getItem('id') !== null && window.localStorage.getItem('firstName') !== null && window.localStorage.getItem('lastName') !== null){
         if(store.getState().token === null){
             store.dispatch({type:'SUCCESS_LOGIN'});
             store.dispatch({type:'ADD_TOKEN',token:window.localStorage.getItem('token')});
-            store.dispatch({type:'ADD_PROFIL',profil:{id:window.localStorage.getItem('id'),firstName:window.localStorage.getItem('firstName')}});
+            store.dispatch({type:'ADD_PROFIL',profil:{id:window.localStorage.getItem('id'),firstName:window.localStorage.getItem('firstName'),lastName:window.localStorage.getItem('lastName')}});
         }
     }
     const navigate = useNavigate();
