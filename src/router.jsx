@@ -4,15 +4,14 @@ import Navbar from "./composantes/navbar";
 import Index from "./pages/index";
 import SignIn from "./pages/sign-in";
 import User from "./pages/user";
-import store from './flux';
-//import ErrorPage from "./components/errorpage";
+import ErrorPage from "./pages/errorpage";
 
 export default function Router() {
   const router = createBrowserRouter([
     {
       path: "/",
       element: <><Navbar /><Index /></>,
-      //errorElement: <ErrorPage />
+      errorElement: <><Navbar /><ErrorPage /></>
     },
     {
       path: "/sign-in",

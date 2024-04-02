@@ -19,7 +19,10 @@ function SignIn(){
             }
         });
         if(store.getState().token !== null) navigate('/user');
-        else console.log("Error");
+        else{
+            console.log("Error");
+            navigate("error");
+        }
     }
     return(
         <main className="main bg-dark">

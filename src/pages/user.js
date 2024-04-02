@@ -1,9 +1,10 @@
 import './../styles/main.css';
+import './../styles/user.css';
 import Transaction from '../composantes/transaction';
-import { useNavigate } from 'react-router-dom';
 import Api from './../services/api';
 import { useState,useEffect } from 'react';
 import store from './../flux';
+import Errorpage from './errorpage';
 function User() {
     const [state,setState] = useState(store.getState());
     const [stateeditname,setstateeditname] = useState(0);
@@ -11,7 +12,6 @@ function User() {
     useEffect(() => {
         store.subscribe(()=>{setState(store.getState())})
     });
-    const navigate = useNavigate();
     
     let data = {
         name:'Tony Jarvis',
@@ -59,7 +59,8 @@ function User() {
             }
             
             await api.changeProfil(store.getState().token,profil).then((answer)=>{
-                console.log(answer);
+                localStorage.setItem("firstName", profil.firstName);
+                localStorage.setItem("lastName", profil.lastName);
                 store.dispatch({type:'CHANGE_PROFIL',profil:profil});
             })
             
@@ -79,10 +80,14 @@ function User() {
         <button className="edit-button" onClick={(e)=>{setstateeditname(1)}}>Edit Name</button>
         :
         <>
-        <input id="input-firstname" type='text' placeholder={store.getState().profil.firstName}/>
-        <input id="input-lastname" type='text' placeholder={store.getState().profil.lastName}/>
-        <button onClick={(e)=>{editname(e)}}>Edit</button>
-        <button onClick={(e)=>{setstateeditname(0)}}>Close</button>
+        <div>
+            <input id="input-firstname" className="input-text" type='text' placeholder={store.getState().profil.firstName}/>
+            <input id="input-lastname" className="input-text" type='text' placeholder={store.getState().profil.lastName}/>
+        </div>
+        <div>
+            <button className='input-button' onClick={(e)=>{editname(e)}}>Edit</button>
+            <button className='input-button' onClick={(e)=>{setstateeditname(0)}}>Close</button>
+        </div>
         </>
       }
       
@@ -98,11 +103,7 @@ function User() {
     }
     </main>
     :
-    <main className="main bg-dark">
-        <div className="header">
-            <h1>Erreur lors de la connexion</h1>
-        </div>
-    </main>
+    <Errorpage />
     );
   }
   
